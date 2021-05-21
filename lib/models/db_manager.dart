@@ -1,9 +1,8 @@
 import 'dart:async';
+
 import 'package:digittodoapp/models/task.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:collection';
 
 class DbManager {
   Database _database;
@@ -12,13 +11,11 @@ class DbManager {
 
   Future openDb() async {
     if (_database == null) {
-      _database = await openDatabase(
-          join(await getDatabasesPath(), "ss.db"),
-          version: 1, onCreate: (Database db, int version) async {
-        await db.execute(         
-           "CREATE TABLE tasks(id INTEGER PRIMARY KEY autoincrement, title TEXT, description TEXT, date TEXT, status INTEGER)",
-            );
-      } );
+      _database = await openDatabase(join(await getDatabasesPath(), "ss.db"), version: 1, onCreate: (Database db, int version) async {
+        await db.execute(
+          "CREATE TABLE tasks(id INTEGER PRIMARY KEY autoincrement, title TEXT, description TEXT, date TEXT, status INTEGER)",
+        );
+      });
     }
   }
 
@@ -46,21 +43,17 @@ class DbManager {
   }
 
   Future<int> updateTask(Task task) async {
-    await openDb();    
-    return await _database.update('tasks', task.toMap(),
-        where: "id = ?", whereArgs: [task.id]);
+    await openDb();
+    return await _database.update('tasks', task.toMap(), where: "id = ?", whereArgs: [task.id]);
   }
 
   Future<int> updateTaskStatus(int id) async {
-    await openDb();    
+    await openDb();
     return await _database.rawUpdate('''UPDATE tasks SET status = ? WHERE id = ? ''', [1, id]);
   }
 
   Future<void> deleteTask(int id) async {
     await openDb();
-    await _database.delete(
-      'tasks',
-        where: "id = ?", whereArgs: [id]
-    );
+    await _database.delete('tasks', where: "id = ?", whereArgs: [id]);
   }
 }

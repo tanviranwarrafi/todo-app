@@ -1,43 +1,33 @@
-import 'package:digittodoapp/main.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:digittodoapp/models/db_manager.dart';
 import 'package:digittodoapp/models/task.dart';
-import 'package:digittodoapp/screens/all_tasks.dart';
-import 'package:digittodoapp/screens/completed.dart';
-import 'package:flutter/material.dart';
-import '../widgets/header.dart';
+import 'package:digittodoapp/screens/all-task-screen.dart';
+import 'package:digittodoapp/screens/completed-task-screen.dart';
+import 'package:digittodoapp/screens/home-screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-class InserNewTask extends StatefulWidget {
+import '../widgets/header.dart';
+
+class InsertNewTask extends StatefulWidget {
   @override
-  _InserNewTaskState createState() => _InserNewTaskState();
+  _InsertNewTaskState createState() => _InsertNewTaskState();
 }
 
-class _InserNewTaskState extends State<InserNewTask> {
-  int _selectedIndex = 0;
+class _InsertNewTaskState extends State<InsertNewTask> {
+  int selectedIndex = 0;
   final mainKey = GlobalKey<ScaffoldState>();
 
   void onTapped(int value) {
-    setState(() {
-      _selectedIndex = value;
-    });
+    setState(() => selectedIndex = value);
 
-    if (_selectedIndex == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CompletedTask()),
-      );
-    } else if (_selectedIndex == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AllTask()),
-      );
+    if (selectedIndex == 1) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedTask()));
+    } else if (selectedIndex == 2) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AllTask()));
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -52,16 +42,12 @@ class _InserNewTaskState extends State<InserNewTask> {
 
   void addTask() {
     Task task = new Task(
-        title: _titleController.text,
-        description: _descriptionController.text,
-        date: _datePickerController.text,
-        status: 0);
-    dbManager.insertTask(task).then((id) => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
-          )
-        });
+      title: _titleController.text,
+      description: _descriptionController.text,
+      date: _datePickerController.text,
+      status: 0,
+    );
+    dbManager.insertTask(task).then((id) => {Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()))});
   }
 
   @override
@@ -70,56 +56,46 @@ class _InserNewTaskState extends State<InserNewTask> {
       key: mainKey,
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Header(),
             Form(
               key: formKey,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 30.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                       child: TextFormField(
                         autocorrect: false,
-                        decoration: InputDecoration(
-                          labelText: "Title *",
-                        ),
+                        decoration: InputDecoration(labelText: "Title *"),
                         controller: _titleController,
                         onChanged: (val) {
                           if (val.isNotEmpty) {
-                            setState(() {
-                              isButtonDisabled = false;
-                            });
+                            setState(() => isButtonDisabled = false);
                           } else {
-                            setState(() {
-                              isButtonDisabled = true;
-                            });
+                            setState(() => isButtonDisabled = true);
                           }
                         },
-                        validator: (val) =>
-                            val.isNotEmpty ? null : 'Title Should Not Be empty',
+                        validator: (val) => val.isNotEmpty ? null : 'Title Should Not Be empty',
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                       child: TextField(
                         autocorrect: false,
-                        decoration: InputDecoration(
-                          labelText: "Task details",
-                        ),
+                        decoration: InputDecoration(labelText: "Task details"),
                         controller: _descriptionController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10.0),
                       child: DateTimeField(
                         format: format,
                         controller: _datePickerController,
@@ -143,9 +119,7 @@ class _InserNewTaskState extends State<InserNewTask> {
                           color: Colors.grey[900],
                           textColor: Colors.white,
                           child: Text("Save"),
-                          onPressed: () {
-                            isButtonDisabled ? null : addTask();
-                          },
+                          onPressed: () => isButtonDisabled ? null : addTask(),
                         ),
                       ),
                     ),
@@ -156,10 +130,8 @@ class _InserNewTaskState extends State<InserNewTask> {
           ],
         ),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/bg.png'),
-          ),
+          color: Colors.transparent,
+          image: DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/bg.png')),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -167,46 +139,22 @@ class _InserNewTaskState extends State<InserNewTask> {
         showUnselectedLabels: true,
         selectedItemColor: Colors.green,
         selectedFontSize: 15,
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
+        onTap: onTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.timelapse,
-              size: 30.0,
-            ),
-            title: Text(
-              'Pending',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.timelapse, size: 30.0),
+            title: Text('Pending', style: TextStyle(color: Colors.black)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.check_box,
-              size: 30.0,
-            ),
-            title: Text(
-              'Completed',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.check_box, size: 30.0),
+            title: Text('Completed', style: TextStyle(color: Colors.black)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.featured_play_list,
-              size: 30.0,
-            ),
-            title: Text(
-              'All',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.featured_play_list, size: 30.0),
+            title: Text('All', style: TextStyle(color: Colors.black)),
           ),
         ],
-        onTap: onTapped,
       ),
     );
   }

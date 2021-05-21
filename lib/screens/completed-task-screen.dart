@@ -1,11 +1,12 @@
-import 'package:digittodoapp/main.dart';
 import 'package:digittodoapp/models/db_manager.dart';
 import 'package:digittodoapp/models/task.dart';
-import 'package:digittodoapp/screens/all_tasks.dart';
+import 'package:digittodoapp/screens/all-task-screen.dart';
+import 'package:digittodoapp/screens/home-screen.dart';
 import 'package:digittodoapp/widgets/todo_list.dart';
-import 'package:flutter/material.dart';
-import '../widgets/header.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../widgets/header.dart';
 
 class CompletedTask extends StatefulWidget {
   @override
@@ -15,11 +16,12 @@ class CompletedTask extends StatefulWidget {
 class _CompletedTaskState extends State<CompletedTask> {
   final DbManager dbManager = new DbManager();
   List<Task> taskList = List();
+  int selectedIndex = 1;
 
   @override
   void initState() {
-    super.initState();
     loadData();
+    super.initState();
   }
 
   @override
@@ -30,23 +32,12 @@ class _CompletedTaskState extends State<CompletedTask> {
     super.setState(fn);
   }
 
-  int _selectedIndex = 1;
-
   void onTapped(int value) {
-    setState(() {
-      _selectedIndex = value;
-    });
-
-    if (_selectedIndex == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-      );
-    } else if (_selectedIndex == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AllTask()),
-      );
+    setState(() => selectedIndex = value);
+    if (selectedIndex == 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else if (selectedIndex == 2) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AllTask()));
     }
   }
 
@@ -54,17 +45,17 @@ class _CompletedTaskState extends State<CompletedTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/bg.png')),
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Header(),
             TodoList(taskList: taskList, taskType: 1),
           ],
-        ),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/bg.png'),
-          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -72,43 +63,19 @@ class _CompletedTaskState extends State<CompletedTask> {
         showUnselectedLabels: true,
         selectedItemColor: Colors.green,
         selectedFontSize: 15,
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.timelapse,
-              size: 30.0,
-            ),
-            title: Text(
-              'Pending',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.timelapse, size: 30.0),
+            title: Text('Pending', style: TextStyle(color: Colors.black)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.check_box,
-              size: 30.0,
-            ),
-            title: Text(
-              'Completed',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.check_box, size: 30.0),
+            title: Text('Completed', style: TextStyle(color: Colors.black)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.featured_play_list,
-              size: 30.0,
-            ),
-            title: Text(
-              'All',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
+            icon: Icon(Icons.featured_play_list, size: 30.0),
+            title: Text('All', style: TextStyle(color: Colors.black)),
           ),
         ],
         onTap: onTapped,

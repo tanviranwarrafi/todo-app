@@ -29,34 +29,19 @@ class _TodoListState extends State<TodoList> {
               final Task task = widget.taskList[index];
               return Dismissible(
                 key: UniqueKey(),
-                onDismissed: (direction) {
-                  dbManager.deleteTask(task.id);
-                },
+                onDismissed: (direction) => dbManager.deleteTask(task.id),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  ),
+                  decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(15)),
                   child: InkWell(
-                    onLongPress: () {
-                      showSimpleDialog(context, task);
-                    },
+                    onLongPress: () => showSimpleDialog(context, task),
                     child: ListTile(
-                      title: Text(
-                        task.title,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Text(
-                        task.date,
-                        style: TextStyle(color: Colors.black),
-                      ),
+                      title: Text(task.title, style: TextStyle(color: Colors.black)),
+                      subtitle: Text(task.date, style: TextStyle(color: Colors.black)),
                       trailing: Checkbox(
                           value: task.status == 1 ? true : false,
-                          activeColor: task.status == 1
-                              ? Colors.green[300]
-                              : Colors.orange[200],
+                          activeColor: task.status == 1 ? Colors.green[300] : Colors.orange[200],
                           onChanged: (newValue) async {
                             if (task.status != 1 && widget.taskType != 1) {
                               await dbManager.updateTaskStatus(task.id);

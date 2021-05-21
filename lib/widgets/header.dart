@@ -9,18 +9,12 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50, left: 24, right: 24),
+      padding: EdgeInsets.only(top: 50, left: 24, right: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Icon(
-            Icons.dashboard,
-            size: 32,
-          ),
-          Icon(
-            Icons.notifications,
-            size: 32,
-          ),
+          Icon(Icons.dashboard, size: 32),
+          Icon(Icons.notifications, size: 32),
         ],
       ),
     );
