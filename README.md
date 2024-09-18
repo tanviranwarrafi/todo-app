@@ -1,4 +1,4 @@
-# Todo App Flutter
+# Todo Application
 
 This project is for learning how to make a todo app in Flutter.
 
