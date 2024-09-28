@@ -1,9 +1,9 @@
 # Todo Application
 
-This project is for learning how to make a todo app in Flutter.
+This project is for learning how to make a todo app using local database in Flutter.
 
-### - use SQLite Database
+- SQLite Database
  
 ## Screenshots
-<img src="screenshots/one.jpg" width="200"> &nbsp;<img src="screenshots/two.jpg" width="200">&nbsp;<img src="screenshots/three.jpg" width="200"> &nbsp; <img src="screenshots/four.jpg" width="200">
+<img src="screenshots/one.png">
 

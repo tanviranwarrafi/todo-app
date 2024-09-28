@@ -5,9 +5,21 @@ class Task {
   String date;
   int status;
 
-  Task({this.title, this.description, this.date, this.status, this.id});
+  Task({
+    required this.title,
+    required this.description,
+    required this.date,
+    required this.status,
+    required this.id,
+  });
 
   Map<String, dynamic> toMap() {
-    return {'title': title, 'description': description, 'date': date, 'status': status};
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'date': date,
+      'status': status,
+    };
   }
 }

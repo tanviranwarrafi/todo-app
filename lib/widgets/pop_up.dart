@@ -1,5 +1,4 @@
-import 'package:digittodoapp/models/task.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app/models/task.dart';
 import 'package:flutter/material.dart';
 
 showSimpleDialog(BuildContext context, Task task) {
@@ -7,7 +6,7 @@ showSimpleDialog(BuildContext context, Task task) {
     title: Text(task.title),
     children: <Widget>[
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -15,9 +14,9 @@ showSimpleDialog(BuildContext context, Task task) {
               task.status == 1 ? 'Completed' : 'Pending',
               style: TextStyle(color: task.status == 1 ? Colors.green[300] : Colors.orange[200]),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text('Deadline: ${task.date}'),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(task.description)
           ],
         ),
@@ -26,5 +25,5 @@ showSimpleDialog(BuildContext context, Task task) {
   );
 
   // show the dialog
-  showDialog(context: context, builder: (BuildContext context) => simpleDialog);
+  showDialog(context: context, builder: (context) => simpleDialog);
 }

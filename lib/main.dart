@@ -1,17 +1,12 @@
-import 'package:digittodoapp/screens/home-screen.dart';
+import 'package:app/todo_app.dart';
+import 'package:app/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'di.dart' as dependency_injection;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Todo',
-      theme: ThemeData(primarySwatch: Colors.grey, canvasColor: Colors.white),
-      home: HomeScreen(title: 'Todo'),
-    );
-  }
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dependency_injection.init();
+  await portraitMode();
+  runApp(TodoApp());
 }
